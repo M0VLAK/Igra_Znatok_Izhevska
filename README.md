@@ -1,0 +1,1 @@
+# Igra_Znatok_Izhevska
