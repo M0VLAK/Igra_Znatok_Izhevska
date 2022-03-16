@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang=ru>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript">
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Игра "Знаток Ижевска"</title>
+</head>
+<body>
+    <div class="bg">
+        <div class="container">
+            <div class="begin" id="begin" ><!--Блок в начале игры-->
+                <div class = "text_begin">
+                    <h1>Живешь в Ижевске?</h1><!--Заголовок-->
+                    <p class="lets_go">Давай проверим, насколько ты знаешь родной город и сыграем в несложную игру</p>
+                    <p class="rules">(Перед тобой будут появлятся фото каких-то известных мест Ижевска.На карте будет метка, которую ты должен перетащить в точку,в которой ты считаешь
+                         находится изображенное место.Всего таких мест будет 3.В конце игры ты увидишь свой результат, если ты хочешь его улучшить или просто сыграть ещё раз нажми
+                          на кнопку "Играть снова") </p><!--Объяснение правил-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container"> <button class="btn" id = "start_btn" onclick="init()">Начать новую игру</button></div><!--Кнопка "Начать новую игру", атрибут "onclick" вызывает функцию при нажатии-->
+    <div class="container pics" id = "pic_div"> <!--Блок с картинкой(демонстрируется только нужная)-->
+        <img class="pic display_none" src="img/Монумент_Дружбы_народов.jpg" alt="Монумент_Дружбы_народов" >
+        <img class="pic display_none" src="img/цирк.jpg" alt="цирк"><!--wbhr-->
+        <img class="pic display_none" src="img/411px-Памятник_Ижику_(Ижевск).jpg" alt = "Памятник_Ижику">
+        <img class="pic display_none" src="img/Mihaylovskaya-kolonna.jpg" alt = "Mihaylovskaya-kolonna">
+        <img class="pic display_none" src="img/оружейники.jpg" alt = "оружейники">
+        <img class="pic display_none" src="img/крокодил.jpg" alt = "крокодил">
+        <img class="pic display_none" src="img/svyato-mihaylovskiy-sobor-izhevsk-1.jpg" alt = "svyato-mihaylovskiy-sobor">
+        <img class="pic display_none" src="img/кузебай_герд.jpg" alt = "кузебай_герд">
+        <img class="pic display_none" src="img/ижевская_соборная_мечеть.jpg" alt = "ижевская_соборная_мечеть">
+        <img class="pic display_none" src="img/бюст_дерябина.jpeg" alt="бюст_дерябина">
+        <img class="pic display_none" src="img/Монумент_боевой_и_трудовой_славы_сынов_и_дочерей_Удмуртии_2.jpg" alt = "Монумент_боевой_и_трудовой_славы">
+        <img class="pic display_none" src="img/zoopark.jpg" alt = "zoopark">
+        <img class="pic display_none" src="img/собор_невского.jpg" alt = "собор_невского">
+        <img class="pic display_none" src="img/рус_драм_театр.jpg" alt = "рус_драм_театр">
+        <img class="pic display_none" src="img/кукольный_театр.jpg" alt = "кукольный_театр">
+        <img class="pic display_none" src="img/памятник_гагарину.jpg" alt = "памятник_гагарину">
+        <img class="pic display_none" src="img/театр_оперы_балета.jpg" alt = "театр_оперы_балета">
+        <img class="pic display_none" src="img/ижсталь.jpg" alt = "ижсталь">
+        <img class="pic display_none" src="img/купол.jpg" alt = "kupol">
+        <img class="pic display_none" src="img/летний_сад.jpg" alt = "летний_сад">
+    </div>
+    <div id = "map" class="map display_none"></div><!--блок, в котором находится карта-->
+    <div class= "container btn_footer_div"> <!--Блок с кнопками-->
+        <button class="btn display_none answer_btn" id = "answer_btn1" onclick="answerClick()">Ответ</button>
+        <button class="btn next_btn display_none" id = "next_btn1" onclick="init2()" >Далее</button>
+        <button class="btn display_none answer_btn" id = "answer_btn2" onclick="answerClick2()">Ответ</button>
+        <button class="btn next_btn display_none" id = "next_btn2" onclick="init3()" >Далее</button>
+        <button class="btn display_none answer_btn" id = "answer_btn3" onclick="answerClick3()">Ответ</button>
+        <button class="btn next_btn display_none" id = "end_game" onclick="endGameClick()">Завершить игру</button>
+    </div>
+    <div class ="info_text_div container"> <!--Блок После ответа-->
+        <h3 class ="your_points" id="your_points"></h3> <!--вывод очков за один вопрос-->
+        <h2 class="display_none you_guess" id = "you_guess">Ты угадывал:</h2> <!--мини-заголовок-->
+        <div><!--блок с текстом о достопримечательности(выводится только нужный)-->
+                <p class="display_none info_text">«Дружба народов» (также употребляется название «Навеки с Россией»,
+                    в народе называют — «Лыжи Кулаковой»)
+                        — монумент, посвящённый 400-летию
+                        вхождения Удмуртии в состав России, открытый 26 июня 1972 года.
+                        Является узнаваемой достопримечательностью Ижевска и всей республики в целом(<a target="_blank" href="https://ru.wikipedia.org/wiki/Дружба_народов_(монумент,_Ижевск)">Википедия</a>).</p>
+                <p class="display_none info_text">Государственный цирк Удмуртии расположен в Ижевске на Красноармейской улице в Первомайском районе города.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Государственный_цирк_Удмуртии">Википедия</a>)</p>
+                <p class="display_none info_text">Скульптура «Ижик» — талисман Ижевска, находится на Центральной площади города.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Ижик">Википедия</a>)</p>
+                <p class="display_none info_text">Михайловская колонна — памятник в Ижевске, установленный на берегу Ижевского пруда в Первомайском районе города.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Михайловская_колонна">Википедия</a>)</p>
+                <p class="display_none info_text">Памятник ижевским оружейникам установлен в Ижевске на берегу пруда, на углу улиц Советской и Свердлова в Первомайском районе города.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Памятник_ижевским_оружейникам">Википедия</a>)</p>
+                <p class="display_none info_text">Памятник крокодилу — произведение постмодернизма, расположенное в центре города Ижевска.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Памятник_крокодилу">Википедия</a>)</p>
+                <p class="display_none info_text">Михайловский собор — кафедральный собор Ижевской епархии Русской православной церкви, расположенный в Ижевске. Находится на одной из самых высоких точек города, на Красной (Михайловской) площади. Высота собора 67 м.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Собор_Святого_Архистратига_Михаила_(Ижевск)">Википедия</a>)</p>
+                <p class="display_none info_text">Памятник Кузебаю Герду, удмуртскому поэту, прозаику, драматургу, национальному и общественному деятелю, установлен в Ижевске на улице Коммунаров рядом с Национальным музеем Удмуртской Республики.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Памятник_Кузебаю_Герду">Википедия</a>)</p>
+                <p class="display_none info_text">Ижевская соборная мечеть находится в Ленинском районе города Ижевск, Удмуртская Республика.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Ижевская_соборная_мечеть">Википедия</a>)</p>
+                <p class="display_none info_text">Бюст Андрея Фёдоровича Дерябина — памятник основателю Ижевского оружейного завода А. Ф. Дерябину, расположенный на Проезде Дерябина в Ижевске. Является памятником регионального значения Удмуртской республики. Установлен 10 июня 1907 года на плотине Ижевского пруда в честь 100-летнего юбилея завода.
+                    Высота постамента составляет 3,1 метра, бронзового бюста — 0,98 метра.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Бюст_А._Ф._Дерябина">Википедия</a>)</p>
+                <p class="display_none info_text">Монумент боевой и трудовой славы — памятник, расположенный на Карлутской площади в Ижевске. Включает статую воина,
+                    Вечный огонь и несколько стел с именами погибших воинов. Является памятником истории и культуры Удмуртской республики.
+                    Высота монумента составляет 10 метров, вес 14 тонн.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Монумент_боевой_и_трудовой_славы_(Ижевск)">Википедия</a>)</p>
+                <p class="display_none info_text">Ижевский зоопарк (Зоопарк Удмуртии, Бюджетное учреждение культуры Удмуртской Республики «Зоопарк Удмуртии») — государственный зоологический парк, выставочный комплекс, расположенный в парке культуры и отдыха им. Кирова в черте города Ижевска.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Ижевский_зоопарк">Википедия</a>)</p>
+                <p class="display_none info_text">Александро-Не́вский собор в Ижевске — православный храм Ижевской и Удмуртской епархии (кафедральный с 1994 по 2017 год). Расположен в историческом центре столицы Удмуртии,
+                    на улице Максима Горького, в квартале, ограниченном улицами Горького, Ленина, Красной и Советской.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Собор_Александра_Невского_(Ижевск)">Википедия</a>)</p>
+                <p class="display_none info_text">Государственный русский драматический театр Удмуртии находится в Ижевске на улице Максима Горького в Октябрьском районе города.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Государственный_русский_драматический_театр_Удмуртии">Википедия</a>)</p>
+                <p class="display_none info_text">Государственный театр кукол Удмуртской Республики находится в городе Ижевске в Индустриальном районе города.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Государственный_театр_кукол_Удмуртской_Республики">Википедия</a>)</p>
+                <p class="display_none info_text">Памятник Юрию Гагарину в Ижевске был установлен 20 апреля 2016 года, к 55-летнему юбилею полёта Юрия Гагарина в космос.Памятник установлен на прилегающей к ижевскому заводу «Аксион-холдинг» территории.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Памятник_Юрию_Гагарину_(Ижевск)">Википедия</a>)</p>  
+                <p class="display_none info_text">Государственный театр оперы и балета Удмуртской Республики им. Петра Ильича Чайковского находится в Ижевске на Пушкинской улице, примыкая к Центральной площади в Октябрьском районе города.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Государственный_театр_оперы_и_балета_Удмуртской_Республики">Википедия</a>)</p>  
+                <p class="display_none info_text">Учреждение культуры и спорта "Ледовый дворец «Ижсталь»" — крытое спортивное сооружение, расположенное в городе Ижевске на улице Удмуртской.
+                    Домашняя спортивная арена хоккейного клуба Ижсталь (Ижевск), выступающего в Высшей хоккейной лиге, а также его фармклуба. 
+                    В ледовом дворце базируется СДЮСШОР «Ижсталь». Проводятся концерты, ледовые шоу, выставки и иные культурные мероприятия.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Ижсталь_(ледовый_дворец)">Википедия</a>)</p>  
+                <p class="display_none info_text">АО «Ижевский электромеханический завод „Купол“» (АО «ИЭМЗ „Купол“») — советское и российское научно-производственное предприятие,
+                    расположенное в городе Ижевск, одно из крупнейших предприятий оборонно-промышленного комплекса России.
+                    Создано в 1957 году.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Ижевский_электромеханический_завод_«Купол»">Википедия</a>)</p>  
+                <p class="display_none info_text">Летний сад имени М. Горького — один из главных и старейших парков Ижевска. Расположен в историческом центре города, на берегу Ижевского пруда, между улицами Милиционной и Максима Горького.(<a target="_blank" href="https://ru.wikipedia.org/wiki/Летний_сад_имени_Горького">Википедия</a>)</p>     
+                </div>
+    </div>
+     <div class="end_game_div container display_none" id="end_game_div"><!--блок, который показывается по завершению игры-->
+        <h1>Игра окончена</h1><!--Заголовок-->
+        <h3 id = "your_total_points" class="your_total_points"></h3><!--вывод всех очков за игру-->
+        <button class="btn" id="restart_btn" onclick="restart()">Играть снова</button><!--кнопка играть снова-->
+    </div>
+<script src= "js/main.js"></script>
+</body>
+</html>
